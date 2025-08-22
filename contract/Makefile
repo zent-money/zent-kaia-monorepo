@@ -1,4 +1,4 @@
-.PHONY: build test fmt snapshot deploy-kairos deploy-krws deploy-zent fund-krws
+.PHONY: build test fmt snapshot deploy-kairos deploy-krws deploy-zent fund-krws sample-invoice sample-pass pay-invoice claim-pass refund-pass close-invoice
 
 build:
 	forge build
@@ -40,3 +40,49 @@ deploy-zent:
 	forge script script/DeployZent.s.sol:DeployZent \
 	  --rpc-url $$KAIA_KAIROS_RPC_URL \
 	  --broadcast --verify --chain-id $$KAIA_KAIROS_CHAIN_ID
+
+sample-invoice:
+	@if [ -z "$$PAYLINK" ] || [ -z "$$KRWS" ]; then echo "Usage: make sample-invoice PAYLINK=0x... KRWS=0x..."; exit 1; fi
+	forge script script/CreateSampleInvoice.s.sol:CreateSampleInvoice \
+	  --sig "run(address,address)" $$PAYLINK $$KRWS \
+	  --rpc-url $$KAIA_KAIROS_RPC_URL --broadcast --chain-id $$KAIA_KAIROS_CHAIN_ID
+
+sample-pass:
+	@if [ -z "$$ESCROW" ] || [ -z "$$KRWS" ]; then echo "Usage: make sample-pass ESCROW=0x... KRWS=0x..."; exit 1; fi
+	forge script script/CreateSamplePass.s.sol:CreateSamplePass \
+	  --sig "run(address,address)" $$ESCROW $$KRWS \
+	  --rpc-url $$KAIA_KAIROS_RPC_URL --broadcast --chain-id $$KAIA_KAIROS_CHAIN_ID
+
+# 가변 인보이스 예시:
+# make pay-invoice PAYLINK=0x... KRWS=0x... ID=1 AMOUNT=123450000 PAYER=0x0000000000000000000000000000000000000000
+# 고정 인보이스 예시(AMOUNT=0):
+# make pay-invoice PAYLINK=0x... KRWS=0x... ID=2 AMOUNT=0 PAYER=0x0000000000000000000000000000000000000000
+pay-invoice:
+	@if [ -z "$$PAYLINK" ] || [ -z "$$KRWS" ] || [ -z "$$ID" ] || [ -z "$$AMOUNT" ] || [ -z "$$PAYER" ]; then \
+		echo "Usage: make pay-invoice PAYLINK=0x... KRWS=0x... ID=<invoiceId> AMOUNT=<units or 0> PAYER=0x0useMsgSender"; exit 1; fi
+	forge script script/PayInvoice.s.sol:PayInvoice \
+	  --sig "run(address,address,uint256,uint256,address)" $$PAYLINK $$KRWS $$ID $$AMOUNT $$PAYER \
+	  --rpc-url $$KAIA_KAIROS_RPC_URL --broadcast --chain-id $$KAIA_KAIROS_CHAIN_ID
+
+# secret은 hex나 문자열을 bytes로 인코딩하여 전달
+# 예: SECRET_HEX=0x73616d706c652d736563726574 ("sample-secret")
+claim-pass:
+	@if [ -z "$$ESCROW" ] || [ -z "$$ID" ] || [ -z "$$SECRET_HEX" ] || [ -z "$$RECEIVER" ]; then \
+		echo "Usage: make claim-pass ESCROW=0x... ID=<passId> SECRET_HEX=0x... RECEIVER=0x0useMsgSender"; exit 1; fi
+	forge script script/ClaimPass.s.sol:ClaimPass \
+	  --sig "run(address,uint256,bytes,address)" $$ESCROW $$ID $$SECRET_HEX $$RECEIVER \
+	  --rpc-url $$KAIA_KAIROS_RPC_URL --broadcast --chain-id $$KAIA_KAIROS_CHAIN_ID
+
+refund-pass:
+	@if [ -z "$$ESCROW" ] || [ -z "$$ID" ]; then \
+		echo "Usage: make refund-pass ESCROW=0x... ID=<passId>"; exit 1; fi
+	forge script script/RefundPass.s.sol:RefundPass \
+	  --sig "run(address,uint256)" $$ESCROW $$ID \
+	  --rpc-url $$KAIA_KAIROS_RPC_URL --broadcast --chain-id $$KAIA_KAIROS_CHAIN_ID
+
+close-invoice:
+	@if [ -z "$$PAYLINK" ] || [ -z "$$ID" ]; then \
+		echo "Usage: make close-invoice PAYLINK=0x... ID=<invoiceId>"; exit 1; fi
+	forge script script/CloseInvoice.s.sol:CloseInvoice \
+	  --sig "run(address,uint256)" $$PAYLINK $$ID \
+	  --rpc-url $$KAIA_KAIROS_RPC_URL --broadcast --chain-id $$KAIA_KAIROS_CHAIN_ID
