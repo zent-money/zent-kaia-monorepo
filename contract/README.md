@@ -19,7 +19,7 @@ export DEPLOYER_PRIVATE_KEY=0x...
 2. Install dependencies, build, and test:
 
 ```bash
-cd packages/zent-contracts
+cd packages/contract
 forge install
 forge build
 forge test

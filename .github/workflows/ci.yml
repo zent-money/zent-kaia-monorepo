@@ -3,7 +3,7 @@ name: contracts-ci
 on:
   push:
     paths:
-      - 'packages/zent-contracts/**'
+      - 'contract/**'
   pull_request:
 
 jobs:
@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: packages/zent-contracts
+        working-directory: contract
     steps:
       - uses: actions/checkout@v4
       - name: Install Foundry
