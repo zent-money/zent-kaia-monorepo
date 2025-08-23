@@ -1,66 +1,45 @@
 "use client";
 import dynamic from "next/dynamic";
-import { CSSProperties, useEffect, useMemo, useState } from "react";
-import { useReducedMotion } from "./useReducedMotion";
+import { useEffect, useState } from "react";
 
-// lottie-react is client-only; load dynamically
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
-export function LottieHero({
-  className,
-  style
-}: { className?: string; style?: CSSProperties }) {
-  const reduced = useReducedMotion();
-
-  // Avoid loading JSON until client
-  const animSrc = useMemo(() => "/anim/hero-pulse.json", []);
+export default function LottieHero() {
   const [data, setData] = useState<any>(null);
 
   useEffect(() => {
-    if (reduced) return;
-    let active = true;
+    let mounted = true;
     (async () => {
-      try {
-        const res = await fetch(animSrc);
-        if (!res.ok) return;
-        const json = await res.json();
-        if (active) setData(json);
-      } catch {}
+      const res = await fetch("/anim/hero-pulse.json");
+      if (!res.ok) return;
+      const json = await res.json();
+      if (mounted) setData(json);
     })();
-    return () => { active = false; };
-  }, [animSrc, reduced]);
+    return () => { mounted = false; };
+  }, []);
+
+  if (!data) {
+    // reduced-motion or 로딩중일 때 정적 플레이스홀더
+    return (
+      <div
+        style={{
+          width: 320, height: 320, borderRadius: 24,
+          background:
+            "radial-gradient(50% 50% at 50% 50%, rgba(37,99,235,0.10) 0%, rgba(37,99,235,0.04) 60%, transparent 100%)",
+          border: "1px solid #e7eefc"
+        }}
+        aria-label="Animation placeholder"
+      />
+    );
+  }
 
   return (
-    <div className={className} style={{ width: 320, height: 320, ...style }}>
-      {!reduced ? (
-        data ? (
-          <Lottie
-            animationData={data}
-            loop
-            autoplay
-            style={{ width: "100%", height: "100%", filter: "drop-shadow(0 12px 30px rgba(37,99,235,0.18))" }}
-            rendererSettings={{ preserveAspectRatio: "xMidYMid meet" }}
-          />
-        ) : (
-          <div
-            style={{
-              width: "100%", height: "100%", borderRadius: 24,
-              background: "radial-gradient(50% 50% at 50% 50%, rgba(37,99,235,0.12) 0%, rgba(37,99,235,0.04) 60%, transparent 100%)",
-              border: "1px solid #e7eefc"
-            }}
-            aria-label="Loading animation"
-          />
-        )
-      ) : (
-        <div
-          style={{
-            width: "100%", height: "100%", borderRadius: 24,
-            background: "radial-gradient(50% 50% at 50% 50%, rgba(37,99,235,0.12) 0%, rgba(37,99,235,0.04) 60%, transparent 100%)",
-            border: "1px solid #e7eefc"
-          }}
-          aria-label="Animation disabled due to reduced motion preference"
-        />
-      )}
-    </div>
+    <Lottie
+      animationData={data}
+      loop
+      autoplay
+      style={{ width: 320, height: 320, filter: "drop-shadow(0 12px 30px rgba(37,99,235,0.18))" }}
+      rendererSettings={{ preserveAspectRatio: "xMidYMid meet" }}
+    />
   );
 }
