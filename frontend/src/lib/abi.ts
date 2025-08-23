@@ -1,10 +1,17 @@
 export const ABI_ESCROW = [
-  { type:"function", name:"createPass", inputs:[
-    {name:"token",type:"address"},{name:"amount",type:"uint256"},
-    {name:"hashSecret",type:"bytes32"},{name:"expiry",type:"uint64"}], stateMutability:"nonpayable", outputs:[{type:"uint256"}] },
-  { type:"function", name:"claimPass", inputs:[
-    {name:"id",type:"uint256"},{name:"secret",type:"bytes"},{name:"receiver",type:"address"}], stateMutability:"nonpayable", outputs:[] },
-  { type:"function", name:"refundPass", inputs:[{name:"id",type:"uint256"}], stateMutability:"nonpayable", outputs:[] },
+  { type:"function", name:"createPass", stateMutability:"nonpayable",
+    inputs:[{name:"token",type:"address"},{name:"amount",type:"uint256"},{name:"hashSecret",type:"bytes32"},{name:"expiry",type:"uint64"}], outputs:[{type:"uint256"}] },
+  { type:"function", name:"claimPass", stateMutability:"nonpayable",
+    inputs:[{name:"id",type:"uint256"},{name:"secret",type:"bytes"},{name:"receiver",type:"address"}], outputs:[] },
+  { type:"function", name:"refundPass", stateMutability:"nonpayable",
+    inputs:[{name:"id",type:"uint256"}], outputs:[] },
+  { type:"function", name:"getPass", stateMutability:"view",
+    inputs:[{name:"id",type:"uint256"}],
+    outputs:[{components:[
+      {name:"sender",type:"address"},{name:"token",type:"address"},{name:"amount",type:"uint256"},
+      {name:"hashSecret",type:"bytes32"},{name:"expiry",type:"uint64"},
+      {name:"claimedBy",type:"address"},{name:"refunded",type:"bool"}
+    ], type:"tuple"}] },
 ] as const;
 
 export const ABI_PAYLINK = [
