@@ -2,20 +2,26 @@
 import Link from "next/link";
 import { Button, Container, Icon } from "semantic-ui-react";
 import { ADDR } from "@/lib/addr";
+import { LottieHero } from "@/components/LottieHero";
 
 export default function Home() {
   return (
     <Container>
-      <section className="hero">
-        <span className="badge"><Icon name="lightning" /> Magic Link Payments</span>
-        <h1>Zent — 링크만으로 KRWS를 보내고 받는 결제 · 인보이스</h1>
-        <p>
-          이메일/링크만으로 결제·송금이 가능한 KRW 스테이블코인(테스트: KRWS) 플랫폼.
-          KYC/세무 자동화, 결제 링크(Zent Link)와 송금 패스(Zent Pass)를 지원합니다.
-        </p>
-        <div className="cta">
-          <Button as={Link} href="/toss" color="blue" size="large">Send via Toss</Button>
-          <Button as={Link} href="/invoice" basic color="blue" size="large">Create Invoice</Button>
+      <section className="hero" style={{ display:"grid", gridTemplateColumns:"1.2fr 1fr", gap:24, alignItems:"center" }}>
+        <div>
+          <span className="badge"><Icon name="lightning" /> Magic Link Payments</span>
+          <h1>Zent — 링크만으로 KRWS를 보내고 받는 결제 · 인보이스</h1>
+          <p>
+            이메일/링크만으로 결제·송금이 가능한 KRW 스테이블코인(테스트: KRWS) 플랫폼.
+            KYC/세무 자동화, 결제 링크(Zent Link)와 송금 패스(Zent Pass)를 지원합니다.
+          </p>
+          <div className="cta">
+            <Button as={Link} href="/toss" color="blue" size="large">Send via Toss</Button>
+            <Button as={Link} href="/invoice" basic color="blue" size="large">Create Invoice</Button>
+          </div>
+        </div>
+        <div style={{ justifySelf:"end" }}>
+          <LottieHero />
         </div>
       </section>
 
