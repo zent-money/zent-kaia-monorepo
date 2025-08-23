@@ -1,14 +1,36 @@
+/* ---- Theme Vars ---- */
 :root{
-  --toss-blue:#3182F6;
-  --toss-blue-dark:#1B64DA;
-  --toss-bg:#F6F8FB;
-  --toss-text:#111827;
+  --primary:#2563EB;   /* 액션 블루 */
+  --primary-dark:#1E40AF;
+  --bg:#ffffff;        /* zent.money처럼 화이트 기반 */
+  --text:#0F172A;      /* 슬레이트 톤 */
+  --muted:#64748B;
+  --card:#F8FAFC;
 }
-html,body{background:var(--toss-bg); color:var(--toss-text);} 
-a{color:var(--toss-blue);} 
-.ui.menu.inverted{background:linear-gradient(90deg,var(--toss-blue),var(--toss-blue-dark)) !important;}
-.ui.button.blue, .ui.blue.buttons .button{background-color:var(--toss-blue) !important;}
-.ui.segment{border-radius:16px !important; box-shadow:0 8px 24px rgba(0,0,0,0.06) !important;}
-h1.ui.header, h2.ui.header{color:#0b1334;}
-/* card-ish container */
-.z-card{background:white; border-radius:18px; padding:20px; box-shadow:0 10px 28px rgba(49,130,246,0.12);} 
+*{box-sizing:border-box}
+html,body{padding:0;margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial;}
+a{color:var(--primary)}
+/* semantic ui overrides */
+.ui.menu.inverted{background:rgba(255,255,255,0.8)!important; backdrop-filter: saturate(180%) blur(10px); border-bottom:1px solid #eef2f7;}
+.ui.menu .item,.ui.menu .header{color:#0b1220!important}
+.ui.button.blue,.ui.blue.buttons .button{background:var(--primary)!important}
+.ui.button.blue:hover{background:var(--primary-dark)!important}
+.ui.segment{border-radius:16px!important; box-shadow:0 8px 24px rgba(15,23,42,0.06)!important; border:1px solid #eef2f7}
+/* hero */
+.hero{
+  position:relative; overflow:hidden; border-radius:28px; padding:56px 32px; background: radial-gradient(1200px 600px at 80% -10%, rgba(37,99,235,0.18), transparent),
+                                                 radial-gradient(800px 500px at -10% 0%, rgba(37,99,235,0.10), transparent),
+                                                 var(--card);
+  border:1px solid #e7eefc;
+}
+.hero h1{font-size:42px; line-height:1.1; margin:0 0 12px}
+.hero p{font-size:18px; color:var(--muted); margin:0 0 24px}
+.hero .cta{display:flex; gap:12px; flex-wrap:wrap}
+.badge{display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px; background:#EEF2FF; color:#3730A3; font-weight:600; font-size:12px; margin-bottom:12px}
+/* feature grid */
+.features{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px}
+.feature{background:var(--card); border:1px solid #eef2f7; border-radius:16px; padding:18px}
+.feature h3{margin:0 0 8px}
+.feature p{margin:0; color:var(--muted)}
+/* footer */
+.footer{color:var(--muted); font-size:14px; padding:24px 0}
