@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Button, Form, Segment, Message, Header } from "semantic-ui-react";
 import { Contract, utils } from "ethers";
-import { connectKaiaWallet, connectKlip, Connected } from "@/lib/kaia";
+import { connectKaiaWallet, Connected } from "@/lib/kaia";
 import { ADDR } from "@/lib/addr";
 import { ABI_ESCROW, ABI_ERC20 } from "@/lib/abi";
 
@@ -13,6 +13,7 @@ export default function PassPage() {
   const [secret, setSecret] = useState("");
   const [hash, setHash] = useState<string>("");
 
+  // If you want to enforce header connection only, throw when null.
   const ensure = async()=> conn ?? (await connectKaiaWallet());
 
   const genSecret = () => {
@@ -68,10 +69,7 @@ export default function PassPage() {
   return (
     <div className="grid gap-4">
       <Header as="h2" color="blue">Zent Pass — 링크 기반 송금</Header>
-      <div className="flex gap-2">
-        <Button color="blue" onClick={async()=>setConn(await connectKaiaWallet())}>KAIA Wallet</Button>
-        <Button color="blue" onClick={async()=>setConn(await connectKlip())}>Klip</Button>
-      </div>
+      {null}
       <Segment>
         <Form>
           <Form.Group widths="equal">

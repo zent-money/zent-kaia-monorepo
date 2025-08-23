@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { Button, Form, Segment, Header, Message } from "semantic-ui-react";
 import { Contract } from "ethers";
-import { connectKaiaWallet, connectKlip, Connected } from "@/lib/kaia";
+import { connectKaiaWallet, Connected } from "@/lib/kaia";
 import { ADDR } from "@/lib/addr";
 import { ABI_PAYLINK, ABI_ERC20 } from "@/lib/abi";
 
@@ -61,10 +61,7 @@ export default function LinkPage() {
   return (
     <div className="grid gap-4">
       <Header as="h2" color="blue">Zent Link — 인보이스</Header>
-      <div className="flex gap-2">
-        <Button color="blue" onClick={async()=>setConn(await connectKaiaWallet())}>KAIA Wallet</Button>
-        <Button color="blue" onClick={async()=>setConn(await connectKlip())}>Klip</Button>
-      </div>
+      {null}
       <Segment>
         <Form>
           <Form.Group widths="equal">
