@@ -1,0 +1,19 @@
+# Circuit build artifacts
+artifacts/*.r1cs
+artifacts/*.sym
+artifacts/*_js/
+artifacts/*.wtns
+artifacts/*.zkey.json
+artifacts/*_0000.zkey
+
+# Keep these files
+!artifacts/code_claim.zkey
+!artifacts/code_claim_vk.json
+!artifacts/Verifier.sol
+!artifacts/vectors/
+
+# Proof outputs
+proof_*.json
+
+# Node modules (if installed locally)
+node_modules/

@@ -1,0 +1,30 @@
+{
+  "name": "zent-kaia-zk-contracts",
+  "version": "1.0.0",
+  "description": "ZK-verified share-code transfers for Zent KAIA contracts",
+  "scripts": {
+    "build:circuits": "cd circuits && ./build.sh",
+    "test": "forge test -vvv",
+    "deploy": "forge script script/DeployZK.s.sol --rpc-url $RPC_URL --broadcast"
+  },
+  "devDependencies": {
+    "circom": "^2.1.8",
+    "circomlib": "^2.0.5",
+    "snarkjs": "^0.7.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yourusername/zent-kaia-monorepo.git"
+  },
+  "keywords": [
+    "zk",
+    "circom",
+    "snarkjs",
+    "solidity",
+    "kaia",
+    "escrow",
+    "invoice"
+  ],
+  "author": "",
+  "license": "MIT"
+}
